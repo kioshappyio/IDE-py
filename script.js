@@ -8,6 +8,10 @@ require(["vs/editor/editor.main"], () => {
         language: "python",
         theme: "vs-dark",
         automaticLayout: true,
+        tabSize: 4,
+        insertSpaces: true,
+        folding: true, // Enable code folding
+        formatOnSave: true, // Enable auto-formatting on save
     });
 
     // Autocomplete for Python code
