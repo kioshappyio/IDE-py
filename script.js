@@ -24,25 +24,23 @@ document.getElementById("run-code").addEventListener("click", () => {
         },
         read: (filename) => {
             if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
+                console.error(`File not found: '${filename}'`); // Log missing file
                 throw `File not found: '${filename}'`;
             }
             return Sk.builtinFiles["files"][filename];
         },
     });
 
-    // Execute Python code
-    try {
-        Sk.misceval
-            .asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, code, true))
-            .then(() => {
-                outputConsole.textContent += "\nExecution finished."; // Indicate completion
-            })
-            .catch((err) => {
-                outputConsole.textContent = `Error:\n${err.toString()}`; // Display error
-            });
-    } catch (error) {
-        outputConsole.textContent = `Unexpected Error:\n${error.toString()}`; // Handle unexpected errors
-    }
+    // Execute Python code using Skulpt
+    Sk.misceval
+        .asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, code, true)) // Execute Python code
+        .then(() => {
+            outputConsole.textContent += "\nExecution finished."; // Indicate completion
+        })
+        .catch((err) => {
+            outputConsole.textContent = `Error:\n${err.toString()}`; // Display error in console
+            console.error("Error during execution:", err); // Log error to browser console
+        });
 });
 
 // Open File (Fallback for Android)
@@ -54,7 +52,7 @@ document.getElementById("open-file").addEventListener("click", () => {
         const file = e.target.files[0];
         if (file) {
             const content = await file.text();
-            editor.setValue(content);
+            editor.setValue(content); // Load file content into the editor
         }
     };
     fileInput.click();
@@ -66,7 +64,7 @@ document.getElementById("save-file").addEventListener("click", () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "code.py";
+    a.download = "code.py"; // Save file with the name 'code.py'
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -75,5 +73,5 @@ document.getElementById("save-file").addEventListener("click", () => {
 
 // Theme Switcher
 document.getElementById("theme-switcher").addEventListener("change", (e) => {
-    monaco.editor.setTheme(e.target.value);
+    monaco.editor.setTheme(e.target.value); // Change Monaco Editor theme
 });
