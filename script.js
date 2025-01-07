@@ -13,12 +13,15 @@ require(["vs/editor/editor.main"], () => {
 
 // Run Python Code
 document.getElementById("run-code").addEventListener("click", () => {
-    const code = editor.getValue();
+    const code = editor.getValue(); // Get the Python code from the editor
     const outputConsole = document.getElementById("output-console");
-    outputConsole.textContent = "Running...\n";
+    outputConsole.textContent = "Running...\n"; // Clear console and show "Running..."
 
+    // Configure Skulpt
     Sk.configure({
-        output: (text) => (outputConsole.textContent += text),
+        output: (text) => {
+            outputConsole.textContent += text; // Append output to the console
+        },
         read: (filename) => {
             if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
                 throw `File not found: '${filename}'`;
@@ -27,17 +30,18 @@ document.getElementById("run-code").addEventListener("click", () => {
         },
     });
 
+    // Execute Python code
     try {
         Sk.misceval
             .asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, code, true))
             .then(() => {
-                outputConsole.textContent += "\nExecution finished.";
+                outputConsole.textContent += "\nExecution finished."; // Indicate completion
             })
             .catch((err) => {
-                outputConsole.textContent = `Error:\n${err.toString()}`;
+                outputConsole.textContent = `Error:\n${err.toString()}`; // Display error
             });
     } catch (error) {
-        outputConsole.textContent = `Unexpected Error:\n${error.toString()}`;
+        outputConsole.textContent = `Unexpected Error:\n${error.toString()}`; // Handle unexpected errors
     }
 });
 
