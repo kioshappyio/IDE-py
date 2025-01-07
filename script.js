@@ -45,7 +45,7 @@ document.getElementById("run-code").addEventListener("click", () => {
     }
 });
 
-// Open File (Fallback)
+// Open File (Fallback for Android)
 document.getElementById("open-file").addEventListener("click", () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -60,7 +60,7 @@ document.getElementById("open-file").addEventListener("click", () => {
     fileInput.click();
 });
 
-// Save File (Fallback)
+// Save File (Fallback for Android)
 document.getElementById("save-file").addEventListener("click", () => {
     const blob = new Blob([editor.getValue()], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
