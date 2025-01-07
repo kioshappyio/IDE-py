@@ -1,4 +1,4 @@
-let editor; // Monaco Editor instance
+let editor;
 
 // Load Monaco Editor
 require.config({ paths: { vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs" } });
@@ -41,47 +41,32 @@ document.getElementById("run-code").addEventListener("click", () => {
     }
 });
 
-// Open File
-document.getElementById("open-file").addEventListener("click", async () => {
-    if (!window.showOpenFilePicker) {
-        alert("Your browser does not support this feature.");
-        return;
-    }
-
-    try {
-        const [fileHandle] = await window.showOpenFilePicker();
-        const file = await fileHandle.getFile();
-        const content = await file.text();
-        editor.setValue(content);
-    } catch (error) {
-        console.error("Failed to open file:", error);
-    }
+// Open File (Fallback)
+document.getElementById("open-file").addEventListener("click", () => {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".py, text/plain";
+    fileInput.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const content = await file.text();
+            editor.setValue(content);
+        }
+    };
+    fileInput.click();
 });
 
-// Save File
-document.getElementById("save-file").addEventListener("click", async () => {
-    if (!window.showSaveFilePicker) {
-        alert("Your browser does not support this feature.");
-        return;
-    }
-
-    try {
-        const options = {
-            types: [
-                {
-                    description: "Python Files",
-                    accept: { "text/plain": [".py"] },
-                },
-            ],
-        };
-        const handle = await window.showSaveFilePicker(options);
-        const writable = await handle.createWritable();
-        await writable.write(editor.getValue());
-        await writable.close();
-        alert("File saved successfully!");
-    } catch (error) {
-        console.error("Failed to save file:", error);
-    }
+// Save File (Fallback)
+document.getElementById("save-file").addEventListener("click", () => {
+    const blob = new Blob([editor.getValue()], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "code.py";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 });
 
 // Theme Switcher
