@@ -9,6 +9,67 @@ require(["vs/editor/editor.main"], () => {
         theme: "vs-dark",
         automaticLayout: true,
     });
+
+    // Autocomplete for Python code
+    monaco.languages.registerCompletionItemProvider('python', {
+        provideCompletionItems: function (model, position) {
+            const suggestions = [
+                {
+                    label: 'print',
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: 'print()',
+                    documentation: 'Prints the specified message to the console',
+                },
+                {
+                    label: 'len',
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: 'len()',
+                    documentation: 'Returns the length of an object',
+                },
+                {
+                    label: 'range',
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: 'range()',
+                    documentation: 'Generates a range of numbers',
+                },
+                {
+                    label: 'for',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'for i in range():',
+                    documentation: 'For loop syntax',
+                },
+                // Add more suggestions as needed
+            ];
+            return { suggestions: suggestions };
+        }
+    });
+
+    // Error detection and diagnostics
+    monaco.languages.registerDiagnostics('python', function(model) {
+        const diagnostics = [];
+        const code = model.getValue();
+
+        // Simple check for a typo or syntax error (for example)
+        if (code.includes("printt")) {
+            diagnostics.push({
+                severity: monaco.Severity.Error,
+                message: "Typo detected: Did you mean 'print'?",
+                range: new monaco.Range(1, 1, 1, 6),
+                code: "typo",
+            });
+        }
+
+        return diagnostics;
+    });
+
+    // Provide feedback for diagnostics
+    editor.onDidChangeModelContent((e) => {
+        const model = editor.getModel();
+        const diagnostics = monaco.languages.getDiagnostics('python', model);
+        if (diagnostics.length > 0) {
+            console.log(diagnostics[0].message); // Print diagnostics message in the console
+        }
+    });
 });
 
 // Run Python Code
