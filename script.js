@@ -82,6 +82,10 @@ document.getElementById("run-code").addEventListener("click", () => {
     const outputConsole = document.getElementById("output-console");
     outputConsole.textContent = "Running...\n"; // Clear console and show "Running..."
 
+    // Get user input from the console input field
+    const consoleInput = document.getElementById("console-input");
+    const userInput = consoleInput.value;
+
     // Configure Skulpt
     Sk.configure({
         output: (text) => {
@@ -101,6 +105,16 @@ document.getElementById("run-code").addEventListener("click", () => {
         .asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, code, true)) // Execute Python code
         .then(() => {
             outputConsole.textContent += "\nExecution finished."; // Indicate completion
+            // Process user input in Skulpt
+            Sk.misceval
+                .asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, userInput, true)) // Execute user input
+                .then(() => {
+                    outputConsole.textContent += "\nUser input processed."; // Indicate input processed
+                })
+                .catch((err) => {
+                    outputConsole.textContent = `Error:\n${err.toString()}`; // Display error in console
+                    console.error("Error during input processing:", err); // Log error to browser console
+                });
         })
         .catch((err) => {
             outputConsole.textContent = `Error:\n${err.toString()}`; // Display error in console
