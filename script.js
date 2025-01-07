@@ -76,17 +76,55 @@ require(["vs/editor/editor.main"], () => {
     });
 });
 
+// Simulate input function
+let inputQueue = [];
+let currentInputPromise = null;
+
+// Custom input handling for Skulpt
+function customInput(prompt) {
+    return new Promise((resolve) => {
+        inputQueue.push({ prompt, resolve });
+        processInputQueue(); // Process the queue whenever a new input is added
+    });
+}
+
+// Process the input queue and get input from the user
+function processInputQueue() {
+    if (inputQueue.length > 0 && !currentInputPromise) {
+        const { prompt, resolve } = inputQueue[0];
+        const outputConsole = document.getElementById("output-console");
+        outputConsole.textContent += `\n${prompt}`; // Display prompt in the console
+        currentInputPromise = new Promise((inputResolve) => {
+            const inputField = document.createElement("input");
+            inputField.type = "text";
+            inputField.placeholder = "Type your input here...";
+            inputField.style.width = "100%";
+            inputField.style.marginTop = "5px";
+            outputConsole.appendChild(inputField);
+            inputField.focus();
+
+            inputField.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    const userInput = inputField.value;
+                    inputField.remove();
+                    resolve(userInput);
+                    inputResolve();
+                    inputQueue.shift(); // Remove from queue
+                    currentInputPromise = null;
+                    processInputQueue(); // Continue processing next inputs in queue
+                }
+            });
+        });
+    }
+}
+
 // Run Python Code
 document.getElementById("run-code").addEventListener("click", () => {
     const code = editor.getValue(); // Get the Python code from the editor
     const outputConsole = document.getElementById("output-console");
     outputConsole.textContent = "Running...\n"; // Clear console and show "Running..."
 
-    // Get user input from the console input field
-    const consoleInput = document.getElementById("console-input");
-    const userInput = consoleInput.value;
-
-    // Configure Skulpt
+    // Configure Skulpt to use custom input function
     Sk.configure({
         output: (text) => {
             outputConsole.textContent += text; // Append output to the console
@@ -98,6 +136,7 @@ document.getElementById("run-code").addEventListener("click", () => {
             }
             return Sk.builtinFiles["files"][filename];
         },
+        inputfun: customInput, // Set the custom input function
     });
 
     // Execute Python code using Skulpt
@@ -105,16 +144,6 @@ document.getElementById("run-code").addEventListener("click", () => {
         .asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, code, true)) // Execute Python code
         .then(() => {
             outputConsole.textContent += "\nExecution finished."; // Indicate completion
-            // Process user input in Skulpt
-            Sk.misceval
-                .asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, userInput, true)) // Execute user input
-                .then(() => {
-                    outputConsole.textContent += "\nUser input processed."; // Indicate input processed
-                })
-                .catch((err) => {
-                    outputConsole.textContent = `Error:\n${err.toString()}`; // Display error in console
-                    console.error("Error during input processing:", err); // Log error to browser console
-                });
         })
         .catch((err) => {
             outputConsole.textContent = `Error:\n${err.toString()}`; // Display error in console
