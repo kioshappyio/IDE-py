@@ -5,25 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Python IDE</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Tambahkan Monaco Editor -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs/loader.min.js"></script>
-    <!-- Tambahkan Skulpt -->
-    <script src="https://cdn.jsdelivr.net/npm/skulpt"></script>
-    <script src="https://cdn.jsdelivr.net/npm/skulpt-stdlib"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/skulpt/1.0.0/skulpt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/skulpt/1.0.0/skulpt-stdlib.js"></script>
 </head>
 <body>
-    <div class="header">
-        <button id="open-file">Open File</button>
-        <button id="save-file">Save File</button>
-        <button id="run-code">Run Code</button>
-        <select id="theme-switcher">
-            <option value="vs-dark">Dark</option>
-            <option value="vs-light">Light</option>
-        </select>
+    <div id="header">
+        <h1>Python IDE</h1>
+        <div id="controls">
+            <button id="open-file">Open File</button>
+            <button id="save-file">Save File</button>
+            <button id="run-code">Run Code</button>
+            <select id="theme-switcher">
+                <option value="vs-dark">Dark Theme</option>
+                <option value="vs-light">Light Theme</option>
+            </select>
+        </div>
     </div>
     <div id="editor-container"></div>
-    <pre id="output-console">Output will be shown here...</pre>
-
+    <div id="console">
+        <h2>Console Output</h2>
+        <pre id="output-console">Output will appear here...</pre>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
