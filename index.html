@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python IDE</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Tambahkan Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs/loader.min.js"></script>
+    <!-- Tambahkan Skulpt -->
+    <script src="https://cdn.jsdelivr.net/npm/skulpt"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt-stdlib"></script>
+</head>
+<body>
+    <div class="header">
+        <button id="open-file">Open File</button>
+        <button id="save-file">Save File</button>
+        <button id="run-code">Run Code</button>
+        <select id="theme-switcher">
+            <option value="vs-dark">Dark</option>
+            <option value="vs-light">Light</option>
+        </select>
+    </div>
+    <div id="editor-container"></div>
+    <pre id="output-console">Output will be shown here...</pre>
+
+    <script src="script.js"></script>
+</body>
+</html>
