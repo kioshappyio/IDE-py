@@ -1,0 +1,230 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    color: #fff;
+    background: linear-gradient(to bottom, #1e1e1e, #121212);
+    overflow: hidden;
+}
+
+/* Header Section */
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: linear-gradient(to right, #007acc, #005a9e);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    flex-wrap: wrap; /* To ensure elements don't overflow */
+}
+
+#header h1 {
+    margin: 0;
+    font-size: 18px;
+    color: white;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#header h1 i {
+    color: #fff;
+    font-size: 22px;
+}
+
+#controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #0066cc;
+    color: white;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+button i {
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #004a99;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+select {
+    padding: 6px;
+    border-radius: 5px;
+    border: none;
+    background-color: #555;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+select:hover {
+    background-color: #444;
+}
+
+/* Main Layout */
+main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Editor Container */
+#editor-container {
+    flex: 1;
+    border: 1px solid #444;
+    background: #1e1e1e;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+    margin-bottom: 10px;
+}
+
+/* Floating Console */
+#console {
+    position: fixed;
+    bottom: 10%;
+    left: 50%;
+    width: 85%;
+    height: 150px;
+    transform: translateX(-50%);
+    background: rgba(40, 40, 40, 0.9);
+    border: 2px solid #444;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+
+/* Console Header (Draggable Area) */
+#console-header {
+    background: #333;
+    color: #fff;
+    padding: 8px 12px;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #444;
+}
+
+#console-header #close-console {
+    cursor: pointer;
+    color: #f66;
+    font-size: 16px;
+}
+
+#console-header #close-console:hover {
+    color: #f33;
+}
+
+/* Console Output Area */
+#output-console {
+    margin: 0;
+    padding: 5px 10px;
+    font-family: Consolas, 'Courier New', monospace;
+    color: #f2f2f2;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    height: calc(100% - 40px); /* Adjust to header height */
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+/* Responsive Design for Small Screens (Android) */
+@media (max-width: 600px) {
+    #header {
+        padding: 10px 12px;
+    }
+
+    #header h1 {
+        font-size: 16px;
+    }
+
+    #controls {
+        gap: 5px;
+    }
+
+    button {
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+
+    button i {
+        font-size: 12px;
+    }
+
+    select {
+        font-size: 10px;
+    }
+
+    /* Adjust Editor and Console */
+    #editor-container {
+        margin-bottom: 5px;
+    }
+
+    #console {
+        bottom: 5%;
+        width: 90%;
+        height: 130px;
+    }
+
+    #output-console {
+        font-size: 11px;
+    }
+}
+
+/* Smaller screen (very small devices) */
+@media (max-width: 400px) {
+    #header {
+        padding: 8px 10px;
+    }
+
+    #header h1 {
+        font-size: 14px;
+    }
+
+    button {
+        padding: 4px 8px;
+        font-size: 8px;
+    }
+
+    button i {
+        font-size: 10px;
+    }
+
+    select {
+        font-size: 8px;
+    }
+
+    #console {
+        bottom: 5%;
+        width: 95%;
+        height: 120px;
+    }
+
+    #output-console {
+        font-size: 10px;
+    }
+}
