@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Python IDE</title>
-    <link rel="stylesheet" href="https://kioshappyio.github.io/U/style.css">
+    <link rel="stylesheet" href="https://kioshappyio.github.io/IDE-py/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs/loader.min.js"></script>
     <script src="https://kioshappyio.github.io/IDE-py/skulpt.min.js"></script>
@@ -31,9 +31,9 @@
             <pre id="output-console">Output will appear here...</pre>
         </div>
     </main>
-    <script src="https://kioshappyio.github.io/U/script.js"></script>
+    <script src="https://kioshappyio.github.io/IDE-py/script.js"></script>
     <script>
-        // Dragging functionality for console
+        
         const draggable = document.querySelector('.draggable');
         const header = document.getElementById('console-header');
 
@@ -56,12 +56,12 @@
             isDragging = false;
         });
 
-        // Close console functionality
+        
         document.getElementById('close-console').addEventListener('click', () => {
             draggable.style.display = 'none';
         });
 
-        // Toggle console functionality
+        
         document.getElementById('toggle-console').addEventListener('click', () => {
             if (draggable.style.display === 'none' || draggable.style.display === '') {
                 draggable.style.display = 'block';
